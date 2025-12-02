@@ -29,25 +29,16 @@ O sniffer monitora passivamente todas as comunicações, aguardando dados sensí
 
 ### Execução do Ataque
 
-#### Passo 3: Acesso à Página de Login
-O usuário acessa a página de login através do navegador:
+#### Passo 3: Acesso à Página de Login e Submissão de Credenciais
+O usuário acessa a página de login através do navegador e preenche suas credenciais:
 
-![Página de login](img/login.jpg)
+![Página de login com credenciais](img/colecria-login.jpg)
 
-A interface parece normal, mas toda comunicação está sendo transmitida em texto plano.
-
-#### Passo 4: Submissão de Credenciais
-Quando o usuário preenche e envia suas credenciais:
-
-![Login sendo realizado](img/login-real.jpg)
-
-As informações são enviadas via HTTP sem qualquer proteção.
+A interface parece normal, mas toda comunicação está sendo transmitida em texto plano. As informações são enviadas via HTTP sem qualquer proteção.
 
 ### Resultado: Credenciais Interceptadas
 
-O sniffer captura todo o tráfego HTTP, incluindo as credenciais em texto plano:
-
-![Credenciais interceptadas](img/intercepted.jpg)
+O sniffer captura todo o tráfego HTTP, incluindo as credenciais em texto plano que foram enviadas pelo formulário.
 
 **Análise do Ataque:**
 - ✅ **Credenciais expostas**: Username e password são claramente visíveis no tráfego capturado
@@ -107,11 +98,22 @@ Quando o usuário acessa o servidor legítimo, o navegador alerta sobre o certif
 #### Cenário B: Ataque MITM (Inseguro)
 O usuário acessa o proxy MITM que se faz passar pelo servidor legítimo:
 
-![Login no servidor MITM](img/colecria-login.jpg)
+![Página de login no servidor MITM](img/login.jpg)
 
 O navegador mostra um aviso de certificado, mas se o usuário aceitar (comportamento comum em ambientes de teste), o atacante consegue interceptar todas as comunicações.
 
+#### Passo 4: Submissão de Credenciais no MITM
+Quando o usuário preenche e envia suas credenciais através do proxy MITM:
+
+![Login sendo realizado no MITM](img/login-real.jpg)
+
+As informações são enviadas via HTTPS, mas o proxy MITM consegue descriptografar o tráfego.
+
 ### Resultado: Interceptação de Tráfego HTTPS
+
+O proxy MITM captura todo o tráfego HTTPS, incluindo as credenciais descriptografadas:
+
+![Credenciais interceptadas pelo MITM](img/intercepted.jpg)
 
 Mesmo usando HTTPS, o proxy MITM consegue descriptografar e visualizar as credenciais:
 
