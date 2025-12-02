@@ -3,7 +3,7 @@ import http.server
 import ssl
 import json
 
-class MITMHandler(http.server.BaseHTTPRequestHandler):
+class SecureHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/':
             self.send_response(200)
@@ -14,7 +14,7 @@ class MITMHandler(http.server.BaseHTTPRequestHandler):
             <html>
             <head><title>HTTPS Application</title></head>
             <body>
-                <h1>HTTPS Application (MITM)</h1>
+                <h1>HTTPS Application</h1>
                 <form id="loginForm">
                     <input type="text" id="username" placeholder="Username" required><br>
                     <input type="password" id="password" placeholder="Password" required><br>
@@ -48,12 +48,9 @@ class MITMHandler(http.server.BaseHTTPRequestHandler):
             body = self.rfile.read(content_length).decode('utf-8')
             data = json.loads(body)
 
-            print("\n" + "="*60)
-            print("[MITM ATTACK] CREDENTIALS INTERCEPTED")
-            print("="*60)
+            print(f"\n[LEGITIMATE SERVER] Received credentials:")
             print(f"Username: {data['username']}")
-            print(f"Password: {data['password']}")
-            print("="*60 + "\n")
+            print(f"Password: {data['password']}\n")
 
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
@@ -62,11 +59,10 @@ class MITMHandler(http.server.BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(response).encode())
 
 if __name__ == '__main__':
-    server = http.server.HTTPServer(('0.0.0.0', 8443), MITMHandler)
+    server = http.server.HTTPServer(('0.0.0.0', 9443), SecureHandler)
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-    context.load_cert_chain('fake_cert.pem', 'fake_key.pem')
+    context.load_cert_chain('certs/legitimate_cert.pem', 'certs/legitimate_key.pem')
     server.socket = context.wrap_socket(server.socket, server_side=True)
 
-    print('[MITM PROXY] Running on https://localhost:8443')
-    print('[MITM PROXY] Using FAKE certificate')
+    print('[LEGITIMATE SERVER] Running on https://localhost:9443')
     server.serve_forever()

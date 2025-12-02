@@ -11,13 +11,13 @@ Demonstrates credential interception over plain HTTP.
 Terminal 1 - Start HTTP server:
 
 ```bash
-python3 server.py
+python3 src/server.py
 ```
 
 Terminal 2 - Start sniffer (requires root):
 
 ```bash
-sudo python3 sniffer.py
+sudo python3 src/sniffer.py
 ```
 
 Terminal 3 - Open browser:
@@ -41,19 +41,19 @@ Demonstrates Man-in-the-Middle attack with fake certificate.
 Step 1 - Generate certificates:
 
 ```bash
-./generate_certs.sh
+./scripts/generate_certs.sh
 ```
 
 Step 2 - Terminal 1 - Start legitimate HTTPS server:
 
 ```bash
-python3 legitimate_server.py
+python3 src/legitimate_server.py
 ```
 
 Step 3 - Terminal 2 - Start MITM proxy with fake certificate:
 
 ```bash
-python3 mitm_proxy.py
+python3 src/mitm_proxy.py
 ```
 
 ### Test Scenario A: Legitimate Server (Secure)
