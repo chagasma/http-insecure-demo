@@ -12,10 +12,9 @@ class MITMHandler(http.server.BaseHTTPRequestHandler):
             html = '''
             <!DOCTYPE html>
             <html>
-            <head><title>Secure Bank</title></head>
+            <head><title>HTTPS Application</title></head>
             <body>
-                <h1>Secure Bank - HTTPS</h1>
-                <p style="color: red; font-size: 10px;">You are on MITM proxy</p>
+                <h1>HTTPS Application (MITM)</h1>
                 <form id="loginForm">
                     <input type="text" id="username" placeholder="Username" required><br>
                     <input type="password" id="password" placeholder="Password" required><br>
@@ -35,7 +34,7 @@ class MITMHandler(http.server.BaseHTTPRequestHandler):
                             body: JSON.stringify(data)
                         });
                         const result = await response.json();
-                        document.getElementById('response').innerHTML = '<p>Login successful!</p>';
+                        document.getElementById('response').innerHTML = '<p>Success</p>';
                     });
                 </script>
             </body>

@@ -12,9 +12,9 @@ class SecureHandler(http.server.BaseHTTPRequestHandler):
             html = '''
             <!DOCTYPE html>
             <html>
-            <head><title>Secure Bank</title></head>
+            <head><title>HTTPS Application</title></head>
             <body>
-                <h1>Secure Bank - HTTPS</h1>
+                <h1>HTTPS Application</h1>
                 <form id="loginForm">
                     <input type="text" id="username" placeholder="Username" required><br>
                     <input type="password" id="password" placeholder="Password" required><br>
@@ -34,7 +34,7 @@ class SecureHandler(http.server.BaseHTTPRequestHandler):
                             body: JSON.stringify(data)
                         });
                         const result = await response.json();
-                        document.getElementById('response').innerHTML = '<p>Login successful!</p>';
+                        document.getElementById('response').innerHTML = '<p>Success</p>';
                     });
                 </script>
             </body>
