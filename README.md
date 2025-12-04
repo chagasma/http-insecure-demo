@@ -1,6 +1,14 @@
-# Atividades da Semana - Segurança em Redes
+# Atividades da Semana 8 - Criptografia e Computação Quântica
 
-Este repositório contém as atividades práticas realizadas durante a semana sobre segurança em redes e criptografia.
+Este repositório contém as atividades práticas realizadas durante a semana 8 da optativa de Criptografia e Computação Quântica.
+
+**Grupo:**
+
+- Ana Goes
+- Gabriel Coletto
+- Mauro das Chagas
+- Vitto Mazeto
+- Hugo Noyma
 
 ## Estrutura
 
