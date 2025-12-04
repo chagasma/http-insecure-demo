@@ -50,7 +50,88 @@ def number_to_text(num):
     byte_data = num.to_bytes(tamanho, "big")
     return byte_data.decode("utf-8")
 
-msg = "olá"
-n = text_to_number(msg)
-print(number_to_text(n))
-assert number_to_text(n) == msg
+# Função para gerar chaves RSA
+def gerar_chaves_rsa(p, q, e=None):
+    """
+    
+    Args:
+        p, q: números primos
+        e: expoente público (se None, usa 65537 ou encontra um coprimo)
+    
+    Returns:
+        (n, e, d): módulo público, expoente público, expoente privado
+    """
+    # Passo 2: Construir o módulo
+    n = p * q
+    
+    # Passo 3: Calcular o(n)
+    phi_n = (p - 1) * (q - 1)
+    
+    # Passo 4: Escolher e (coprimo com o(n))
+    if e is None:
+        # Tenta usar 65537 (valor comum) se for menor que phi_n
+        if 65537 < phi_n and egcd(65537, phi_n)[0] == 1:
+            e = 65537
+        else:
+            # Encontra um e coprimo começando de 3
+            e = None
+            for i in range(3, phi_n, 2):
+                if egcd(i, phi_n)[0] == 1:
+                    e = i
+                    break
+            if e is None:
+                raise ValueError("Não foi possível encontrar e coprimo com o(n)")
+    
+    # Verifica se e é válido
+    if e >= phi_n or egcd(e, phi_n)[0] != 1:
+        raise ValueError("e deve ser coprimo com o(n) e menor que o(n)")
+    
+    # Passo 5: Calcular d (inversa de e mod o(n))
+    d = mod_inverse(e, phi_n)
+    
+    return n, e, d
+
+# Função de criptografia RSA
+def criptografar_rsa(mensagem, n, e):
+    """    
+    Criptografia: c ≡ m^e (mod n)
+    
+    Args:
+        mensagem: string a ser criptografada
+        n: módulo público (produto de p e q)
+        e: expoente público
+    
+    Returns:
+        c: número criptografado
+    """
+    # Converte mensagem para número
+    m = text_to_number(mensagem)
+    
+    # Verifica se m < n (requisito do RSA)
+    if m >= n:
+        raise ValueError(f"Mensagem muito grande. m={m} deve ser menor que n={n}")
+    
+    # Criptografia: c ≡ m^e (mod n)
+    c = mod_exp(m, e, n)
+    
+    return c
+
+if __name__ == "__main__":
+
+    p = 50021
+    q = 50023
+    
+    # Gera chaves
+    n, e, d = gerar_chaves_rsa(p, q)
+    print(f"Chaves geradas:")
+    print(f"  n = {n}")
+    print(f"  e = {e}")
+    print(f"  d = {d}")
+    
+    # Mensagem a criptografar
+    msg = "olá"
+    print(f"\nMensagem original: {msg}")
+    
+    # Criptografa
+    c = criptografar_rsa(msg, n, e)
+    print(f"Mensagem criptografada (c): {c}")
