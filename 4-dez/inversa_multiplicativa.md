@@ -47,3 +47,29 @@ A inversa multiplicativa modular é fundamental em algoritmos como **RSA**, onde
 $$e \times d \equiv 1 \pmod{\phi(n)}$$
 
 Onde $\phi(n)$ é a função totiente de Euler.
+
+## Números sem inverso multiplicativo
+
+No sistema numérico padrão, o número zero ($0$) é o único que não possui inversa multiplicativa.
+Motivo: Por definição, a inversa $b$ de $0$ teria que satisfazer:$$0 \times b = 1$$
+
+No entanto, qualquer número multiplicado por zero resulta em zero ($0 \times b = 0$). Como $0 \neq 1$, a equação é impossível. Portanto, a divisão por zero é indefinida.2. Na Aritmética ModularEm um sistema módulo $n$, um número $a$ não possui inversa se $a$ e $n$ compartilharem algum divisor comum maior que 1. Ou seja, se:
+$$\gcd(a, n) > 1$$
+
+Neste caso, $a$ é chamado de divisor de zero (ou simplesmente não invertível) naquele anel modular. Exemplo de InexistênciaVamos tentar encontrar a inversa de $2$ módulo $6$. Procuramos um $x$ tal que:
+$$2 \times x \equiv 1 \pmod{6}$$
+
+Vamos testar os valores possíveis em:
+- $2 \times 1 = 2 \equiv 2 \pmod{6}$
+- $2 \times 2 = 4 \equiv 4 \pmod{6}$
+- $2 \times 3 = 6 \equiv 0 \pmod{6}$
+- $2 \times 4 = 8 \equiv 2 \pmod{6}$
+- $2 \times 5 = 10 \equiv 4 \pmod{6}$
+
+Observação: Os resultados alternam entre $0, 2, 4$. O valor $1$ nunca é alcançado.
+Isso acontece porque $\gcd(2, 6) = 2$, e $2 \neq 1$. Portanto, $2$ não tem inversa módulo $6$.
+
+### Consequência para a Criptografia 
+Nnexistência de inversas para números não coprimos é a razão pela qual a escolha de números primos é crucial em algoritmos como o RSA.
+- Se escolhermos um valor público $e$ que não seja coprimo com $\phi(n)$, a chave privada $d$ (que é a inversa de $e$) não poderá ser calculada.
+- Sem $d$, é impossível descriptografar a mensagem matematicamente.
